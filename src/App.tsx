@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import {
   ChakraProvider,
   Box,
@@ -14,21 +14,54 @@ import {
 import { ColorModeSwitcher } from "./ColorModeSwitcher"
 import { Logo } from "./Logo"
 
+import Cryptocurrency, { Cryptocurrencies, CryptocurrencyMap } from "./cryptocurrencies";
+import PriceService from './service';
 
 export const App = () => {
-  const [price, setPrice] = useState('------');
-  const [color, setColor] = useState('blue.800');
+  const initialCryptoData = Object.fromEntries(
+    Array.from(CryptocurrencyMap).map(([crypto, cryptoData]) => [
+      crypto,
+      { ...cryptoData },
+    ])
+  );
 
-  let webSocket = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@trade');
-  let lastPrice = '0.0';
+  const [cryptoData, setCryptoData] = useState(initialCryptoData);
 
-  webSocket.onmessage = (event) => {
-    const stockPrice = parseFloat(JSON.parse(event.data).p).toFixed(2);
-    setPrice('$' + stockPrice);
-    setColor(!lastPrice || lastPrice === stockPrice ? 'black' : parseFloat(lastPrice) > parseFloat(stockPrice) ? 'red' : 'green');
+  useEffect(() => {
+    const cryptoServices = {} as Record<Cryptocurrencies, PriceService>;
 
-    lastPrice = stockPrice;
-  };
+    function handlePriceUpdate(crypto: Cryptocurrencies) {
+      return (price: string, color: string) => {
+        setCryptoData((prevCryptoData) => ({
+          ...prevCryptoData,
+          [crypto]: { ...prevCryptoData[crypto], price, color },
+        }));
+      };
+    }
+
+    for (const crypto of CryptocurrencyMap.keys()) {
+      const cryptoData = CryptocurrencyMap.get(crypto);
+
+      if (cryptoData) {
+        const service = new PriceService(cryptoData);
+
+        // Use the handlePriceUpdate function with the correct 'crypto'
+        service.registerSendPriceCallback(handlePriceUpdate(crypto));
+
+        cryptoServices[crypto] = service;
+      }
+    }
+
+    // Clean up WebSocket connections when the component unmounts
+    return () => {
+      for (const service of Object.values(cryptoServices)) {
+        service.ws?.close();
+      }
+    };
+  }, []);
+
+
+
 
   return (
     <ChakraProvider theme={theme}>
@@ -61,34 +94,24 @@ export const App = () => {
           h="300px"
           justifyContent={"space-evenly"}
         >
-          <Flex
-            bgColor={"blue.50"}
-            borderRadius={10}
-            width={"95%"}
-            justifyContent={"space-between"}
-            shadow={"base"}
-          >
-            <Text fontSize="2xl" color="blue.800" marginLeft={5}>
-              BTC
-            </Text>
-            <Text fontSize="2xl" color={color} marginRight={5}>
-              {price}
-            </Text>
-          </Flex>
-          <Flex
-            bgColor={"blue.50"}
-            borderRadius={10}
-            width={"95%"}
-            justifyContent={"space-between"}
-            shadow={"base"}
-          >
-            <Text fontSize="2xl" color="blue.800" marginLeft={5}>
-              ETH
-            </Text>
-            <Text fontSize="2xl" color="blue.800" marginRight={5}>
-              $-------
-            </Text>
-          </Flex>
+
+          {Array.from(CryptocurrencyMap.keys()).map((crypto) => (
+            <Flex
+              bgColor={"blue.50"}
+              borderRadius={10}
+              width={"95%"}
+              justifyContent={"space-between"}
+              shadow={"base"}
+            >
+              <Text fontSize="2xl" color="blue.800" marginLeft={5}>
+                {cryptoData[crypto].name}
+              </Text>
+              <Text fontSize="2xl" color={cryptoData[crypto].color} marginRight={5}>
+                ${cryptoData[crypto].price}
+              </Text>
+            </Flex>
+          ))}
+
         </Flex>
       </Box>
     </ChakraProvider>
