@@ -18,6 +18,7 @@ import Cryptocurrency, { Cryptocurrencies, CryptocurrencyMap } from "./cryptocur
 import PriceService from './service';
 
 export const App = () => {
+
   const initialCryptoData = Object.fromEntries(
     Array.from(CryptocurrencyMap).map(([crypto, cryptoData]) => [
       crypto,
@@ -104,7 +105,8 @@ export const App = () => {
               shadow={"base"}
             >
               <Text fontSize="2xl" color="blue.800" marginLeft={5}>
-                {cryptoData[crypto].name}
+                {/* {cryptoData[crypto].name} */}
+                {crypto}
               </Text>
               <Text fontSize="2xl" color={cryptoData[crypto].color} marginRight={5}>
                 ${cryptoData[crypto].price}
