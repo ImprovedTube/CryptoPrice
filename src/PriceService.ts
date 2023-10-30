@@ -1,4 +1,3 @@
-import React, { useState } from "react"
 import Cryptocurrency from "./cryptocurrencies";
 
 class PriceService {

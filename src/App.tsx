@@ -17,7 +17,7 @@ import { ColorModeSwitcher } from "./ColorModeSwitcher"
 import { Logo } from "./Logo"
 
 import Cryptocurrency, { Cryptocurrencies, CryptocurrencyMap } from "./cryptocurrencies";
-import PriceService from './service';
+import PriceService from './PriceService';
 
 export const App = () => {
 
