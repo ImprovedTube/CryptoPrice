@@ -75,7 +75,7 @@ export const App = () => {
         h='120px'
         margin={0}
         bg={"black"}
-        justifyContent={"space-between"}
+        justifyContent={"flex-start"}
         flexDir={"column"}
       >
         <Flex
@@ -87,8 +87,10 @@ export const App = () => {
         >
           <Button
             bgColor={"gray.700"}
+            borderRadius={0}
             borderColor={"gray.600"}
             border={"2px"}
+            borderBottom={"1px"}
             h='30px'
             w='80px'
             textColor={"gray.200"}
@@ -99,6 +101,7 @@ export const App = () => {
                 bgColor: "gray.600",
                 borderColor: "gray.500",
                 border: "2px",
+                borderBottom: "1px",
               }
             }
             _active={
@@ -106,6 +109,7 @@ export const App = () => {
                 bgColor: "gray.500",
                 borderColor: "gray.400",
                 border: "2px",
+                borderBottom: "1px",
               }
             }
           >
@@ -113,8 +117,10 @@ export const App = () => {
           </Button>
           <Button
             bgColor={"gray.700"}
+            borderRadius={0}
             borderColor={"gray.600"}
             border={"2px"}
+            borderBottom={"1px"}
             h='30px'
             w='80px'
             textColor={"gray.200"}
@@ -124,12 +130,16 @@ export const App = () => {
               {
                 bgColor: "gray.600",
                 borderColor: "gray.500",
+                border: "2px",
+                borderBottom: "1px",
               }
             }
             _active={
               {
                 bgColor: "gray.500",
                 borderColor: "gray.400",
+                border: "2px",
+                borderBottom: "1px",
               }
             }
           >
@@ -144,12 +154,12 @@ export const App = () => {
           {Array.from(CryptocurrencyMap.keys()).map((crypto, i, row) => (
             <Flex
               bg={"black"}
-              borderColor={"white.900"}
               borderTop={"1px solid"}
               width={"100%"}
               justifyContent={"space-between"}
               shadow={"base"}
               borderBottom={{ base: i === row.length - 1 ? "1px solid" : "none" }}
+              borderColor={"gray.600"}
             >
               <Text fontSize="md" fontWeight={"semibold"} color="gray.200" marginLeft={5}>
                 {crypto}
