@@ -20,7 +20,7 @@ class PriceService {
         this.ws.onmessage = (event: any) => {
             const stockPrice = parseFloat(JSON.parse(event.data).p).toFixed(2);
             //setPrice('$' + stockPrice);
-            const color = !this.lastPrice || this.lastPrice === stockPrice ? 'black' : parseFloat(this.lastPrice) > parseFloat(stockPrice) ? 'red' : 'green';
+            const color = !this.lastPrice || this.lastPrice === stockPrice ? 'gray.200' : parseFloat(this.lastPrice) > parseFloat(stockPrice) ? 'red' : 'green';
 
             this.lastPrice = stockPrice;
             this.sendPriceCallback?.(stockPrice, color);
