@@ -18,6 +18,7 @@ import { Logo } from "./Logo"
 
 import Cryptocurrency, { Cryptocurrencies, CryptocurrencyMap } from "./cryptocurrencies";
 import PriceService from './PriceService';
+import { fetchPriceChangePercent } from './PriceChangeService';
 
 export const App = () => {
 
@@ -30,7 +31,24 @@ export const App = () => {
 
   const [cryptoData, setCryptoData] = useState(initialCryptoData);
 
+
+  const [cryptoChangeData, setCryptoChangeData] = useState(new Map<Cryptocurrencies, number | null>());
+
   useEffect(() => {
+    const fetchData = async () => {
+      const promises = Array.from(CryptocurrencyMap.keys()).map(async (crypto) => {
+        const priceChange = await fetchPriceChangePercent(crypto);
+        return [crypto, priceChange] as [Cryptocurrencies, number | null];
+      });
+
+      const cryptoChangeData = new Map(await Promise.all(promises));
+      setCryptoChangeData(cryptoChangeData);
+    };
+    fetchData();
+
+
+
+
     const cryptoServices = {} as Record<Cryptocurrencies, PriceService>;
 
     function handlePriceUpdate(crypto: Cryptocurrencies) {
@@ -156,6 +174,7 @@ export const App = () => {
               bg={"black"}
               borderTop={"1px solid"}
               width={"100%"}
+              alignItems={"center"}
               justifyContent={"space-between"}
               shadow={"base"}
               borderBottom={{ base: i === row.length - 1 ? "1px solid" : "none" }}
@@ -164,56 +183,15 @@ export const App = () => {
               <Text fontSize="md" fontWeight={"semibold"} color="gray.200" marginLeft={5}>
                 {crypto}
               </Text>
+              <Text fontSize="sm" color={(!cryptoChangeData.get(crypto) || !crypto || cryptoChangeData.get(crypto) === 0) ? "gray.200" : (cryptoChangeData.get(crypto)! > 0) ? "green" : "red"} marginRight={5}>
+                {cryptoChangeData.get(crypto)}%
+              </Text>
               <Text fontSize="md" fontWeight={"semibold"} color={cryptoData[crypto].color} marginRight={5}>
                 ${cryptoData[crypto].price}
               </Text>
             </Flex>
           ))}
         </Flex>
-
-
-
-        {/*<Box
-          h='50px'
-          bgColor={"blue.100"}
-          shadow={"base"}
-        >
-          <Center>
-
-            <Text
-              fontSize="2xl"
-              color="blue.900"
-            >
-              Crypto Price
-            </Text>
-          </Center>
-        </Box>
-        <Flex
-          flexDir={"column"}
-          width={"100%"}
-          alignItems={"center"}
-          h="300px"
-          justifyContent={"space-evenly"}
-        >
-
-          {Array.from(CryptocurrencyMap.keys()).map((crypto) => (
-            <Flex
-              bgColor={"blue.50"}
-              borderRadius={10}
-              width={"95%"}
-              justifyContent={"space-between"}
-              shadow={"base"}
-            >
-              <Text fontSize="2xl" color="blue.800" marginLeft={5}>
-                {crypto}
-              </Text>
-              <Text fontSize="2xl" color={cryptoData[crypto].color} marginRight={5}>
-                ${cryptoData[crypto].price}
-              </Text>
-            </Flex>
-          ))}
-
-          </Flex>*/}
       </Flex>
     </ChakraProvider >
   );
