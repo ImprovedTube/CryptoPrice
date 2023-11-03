@@ -7,7 +7,7 @@ import {
 
 import { PricePage } from "./PricePage";
 import { CryptoListPage } from "./CryptoListPage";
-import { Menu } from "./Menu";
+import Menu from "./Menu";
 
 export const App = () => {
   const [currentPage, setCurrentPage] = useState("Price");
@@ -24,7 +24,7 @@ export const App = () => {
         justifyContent={"flex-start"}
         flexDir={"column"}
       >
-        <Menu />
+        <Menu setCurrentPage={setCurrentPage} />
         {currentPage === "Price" ? <PricePage /> : null}
         {currentPage === "CryptoList" ? <CryptoListPage /> : null}
       </Flex>

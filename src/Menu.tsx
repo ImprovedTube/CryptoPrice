@@ -2,8 +2,20 @@ import {
     Flex,
     Button,
 } from "@chakra-ui/react"
+import { useState } from "react";
 
-export const Menu = () => {
+interface MenuProps {
+    setCurrentPage: (page: string) => void,
+}
+
+const Menu: React.FC<MenuProps> = ({ setCurrentPage }) => {
+
+    const [activePage, setActivePage] = useState('Price');
+
+    const handleButtonClick = (pageName: string) => {
+        setActivePage(pageName);
+        setCurrentPage(pageName);
+    };
 
     return (
         <Flex
@@ -25,6 +37,9 @@ export const Menu = () => {
                 textColor={"gray.200"}
                 fontSize={'12px'}
                 fontFamily={'Inter'}
+
+                onClick={() => handleButtonClick('Price')}
+
                 _hover={
                     {
                         bgColor: "gray.600",
@@ -55,6 +70,9 @@ export const Menu = () => {
                 textColor={"gray.200"}
                 fontSize={'12px'}
                 fontFamily={'Inter'}
+
+                onClick={() => handleButtonClick('CryptoList')}
+
                 _hover={
                     {
                         bgColor: "gray.600",
@@ -77,3 +95,5 @@ export const Menu = () => {
         </Flex>
     );
 }
+
+export default Menu;
