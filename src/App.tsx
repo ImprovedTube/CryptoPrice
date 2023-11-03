@@ -23,6 +23,7 @@ export const App = () => {
         bg={"black"}
         justifyContent={"flex-start"}
         flexDir={"column"}
+        overflow-x={"auto"}
       >
         <Menu setCurrentPage={setCurrentPage} />
         {currentPage === "Price" ? <PricePage /> : null}
