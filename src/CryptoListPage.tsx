@@ -2,17 +2,17 @@ import { useEffect, useState } from "react";
 
 import {
     Flex,
-    Icon,
     Text,
 } from "@chakra-ui/react"
 
-import { AddIcon } from '@chakra-ui/icons'
+import { AddIcon, CheckIcon } from '@chakra-ui/icons'
 
 
 const apiURL = 'https://api.binance.com/api/v3/exchangeInfo';
 
 export const CryptoListPage = () => {
     const [cryptoData, setCryptoData] = useState([]);
+    const [selectedCryptos, setSelectedCryptos] = useState([]);
 
     async function fetchCryptocurrencies() {
         try {
@@ -37,6 +37,17 @@ export const CryptoListPage = () => {
     }
     );
 
+    const handleFlexClick = (crypto: never) => {
+        // Toggle the selected status of the clicked crypto
+        setSelectedCryptos((prevSelectedCryptos) => {
+          if (prevSelectedCryptos.includes(crypto)) {
+            return prevSelectedCryptos.filter((selectedCrypto) => selectedCrypto !== crypto);
+          } else {
+            return [...prevSelectedCryptos, crypto];
+          }
+        });
+    };
+
     return (
         <Flex
             flexDir={"column"}
@@ -54,11 +65,19 @@ export const CryptoListPage = () => {
                     shadow={"base"}
                     borderBottom={{ base: index === row.length - 1 ? "1px solid" : "none" }}
                     borderColor={"gray.600"}
+
+                    onClick={() => handleFlexClick(crypto)} // Replace "yourCryptoValue" with the actual crypto value
+                    _hover={{ cursor: "pointer", bg: "gray.800" }}
                 >
                     <Text fontSize="md" fontWeight={"semibold"} color="gray.200" marginLeft={5}>
                         {crypto}
                     </Text>
-                    <AddIcon color={"gray.200"} marginRight={5} fontSize="md" fontWeight={"semibold"} />
+                    {/* <AddIcon color={"gray.200"} marginRight={5} fontSize="md" fontWeight={"semibold"} /> */}
+                    {selectedCryptos.includes(crypto) ? (
+                        <CheckIcon color={"gray.200"} marginRight={5} fontSize="md" fontWeight={"semibold"} />
+                    ) : (
+                        <AddIcon color={"gray.200"} marginRight={5} fontSize="md" fontWeight={"semibold"} />
+                    )}
                 </Flex>
             ))}
         </Flex>
