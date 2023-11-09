@@ -7,12 +7,24 @@ import {
 
 import { AddIcon, CheckIcon } from '@chakra-ui/icons'
 
+import { getCryptosFromStorage, setSelectedCryptosInStorage } from "./background";
+
 
 const apiURL = 'https://api.binance.com/api/v3/exchangeInfo';
 
 export const CryptoListPage = () => {
     const [cryptoData, setCryptoData] = useState([]);
     const [selectedCryptos, setSelectedCryptos] = useState([]);
+
+    async function fetchSelectedCryptos() {
+        try {
+          const datas = await getCryptosFromStorage();
+          // Handle the datas here
+          console.log("Cryptos retrieved:", datas);
+        } catch (error) {
+          console.error("Error retrieving cryptos:", error);
+        }
+      }
 
     async function fetchCryptocurrencies() {
         try {
@@ -32,7 +44,13 @@ export const CryptoListPage = () => {
         }
     }
 
+    
+
     useEffect(() => {
+        // const datas = getCryptosFromStorage();
+        // console.log(datas);
+        fetchSelectedCryptos();
+
         fetchCryptocurrencies();
     }
     );
@@ -46,6 +64,8 @@ export const CryptoListPage = () => {
             return [...prevSelectedCryptos, crypto];
           }
         });
+
+        setSelectedCryptosInStorage(selectedCryptos);
     };
 
     return (
@@ -72,7 +92,6 @@ export const CryptoListPage = () => {
                     <Text fontSize="md" fontWeight={"semibold"} color="gray.200" marginLeft={5}>
                         {crypto}
                     </Text>
-                    {/* <AddIcon color={"gray.200"} marginRight={5} fontSize="md" fontWeight={"semibold"} /> */}
                     {selectedCryptos.includes(crypto) ? (
                         <CheckIcon color={"gray.200"} marginRight={5} fontSize="md" fontWeight={"semibold"} />
                     ) : (

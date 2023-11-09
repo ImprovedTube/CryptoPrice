@@ -12,5 +12,9 @@
     "activeTab",
     "scripting",
     "storage"
-  ]
+  ],
+  "background": {
+    "scripts" : ["src/background.js"],
+    "persistent": false
+  }
 }
