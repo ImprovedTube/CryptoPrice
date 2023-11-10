@@ -14,7 +14,7 @@
     "storage"
   ],
   "background": {
-    "scripts" : ["src/background.js"],
-    "persistent": false
+    "service_worker" : "./static/js/src/background.js",
+    "type" : "module"
   }
 }
