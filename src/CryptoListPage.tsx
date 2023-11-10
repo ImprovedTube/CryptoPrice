@@ -18,9 +18,10 @@ export const CryptoListPage = () => {
 
     async function fetchSelectedCryptos() {
         try {
-          const datas = await getCryptosFromStorage();
+          const cryptos = await getCryptosFromStorage();
           // Handle the datas here
-          console.log("Cryptos retrieved:", datas);
+        //   console.log("Cryptos retrieved:", datas);
+            setSelectedCryptos(cryptos);
         } catch (error) {
           console.error("Error retrieving cryptos:", error);
         }
@@ -47,10 +48,13 @@ export const CryptoListPage = () => {
     
 
     useEffect(() => {
-        fetchSelectedCryptos();
-        fetchCryptocurrencies();
-    }
-    );
+        async function fetchInitialData() {
+            await fetchSelectedCryptos();
+            fetchCryptocurrencies();
+          }
+      
+          fetchInitialData();
+    }, []);
 
     const handleFlexClick = (crypto: never) => {
 
