@@ -18,7 +18,7 @@ function storeChoosenCurrencies(currencies) {
     // stored_data = JSON.stringify(currencies);
 
     chrome.storage.sync.set({ key: currencies }, function () {
-        console.log("Value is set");
+        // console.log("Value is set");
     });
 
     // console.log("Stored data: ", stored_data);

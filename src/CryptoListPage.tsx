@@ -47,15 +47,13 @@ export const CryptoListPage = () => {
     
 
     useEffect(() => {
-        // const datas = getCryptosFromStorage();
-        // console.log(datas);
         fetchSelectedCryptos();
-
         fetchCryptocurrencies();
     }
     );
 
     const handleFlexClick = (crypto: never) => {
+
         // Toggle the selected status of the clicked crypto
         setSelectedCryptos((prevSelectedCryptos) => {
           if (prevSelectedCryptos.includes(crypto)) {
@@ -65,7 +63,11 @@ export const CryptoListPage = () => {
           }
         });
 
-        setSelectedCryptosInStorage(selectedCryptos);
+        // Save the selected cryptos in storage
+        setSelectedCryptos((updatedCryptos) => {
+            setSelectedCryptosInStorage(updatedCryptos);
+            return updatedCryptos; // Return the updated value for React to use
+        });
     };
 
     return (
