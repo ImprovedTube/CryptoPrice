@@ -21,16 +21,16 @@ const CryptoListPage: React.FC<CryptoListPageProps> = ({ selectedCryptos, setSel
     const [cryptoData, setCryptoData] = useState([]);
     // const [selectedCryptos, setSelectedCryptos] = useState([]);
 
-    async function fetchSelectedCryptos() {
-        try {
-          const cryptos = await getCryptosFromStorage();
-          // Handle the datas here
-        //   console.log("Cryptos retrieved:", datas);
-            setSelectedCryptos(cryptos);
-        } catch (error) {
-          console.error("Error retrieving cryptos:", error);
-        }
-      }
+    // async function fetchSelectedCryptos() {
+    //     try {
+    //       const cryptos = await getCryptosFromStorage();
+    //       // Handle the datas here
+    //     //   console.log("Cryptos retrieved:", datas);
+    //         setSelectedCryptos(cryptos);
+    //     } catch (error) {
+    //       console.error("Error retrieving cryptos:", error);
+    //     }
+    //   }
 
     async function fetchCryptocurrencies() {
         try {
@@ -54,7 +54,7 @@ const CryptoListPage: React.FC<CryptoListPageProps> = ({ selectedCryptos, setSel
 
     useEffect(() => {
         async function fetchInitialData() {
-            await fetchSelectedCryptos();
+            // await fetchSelectedCryptos();
             fetchCryptocurrencies();
           }
       

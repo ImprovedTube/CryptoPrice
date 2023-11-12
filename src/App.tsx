@@ -9,10 +9,32 @@ import PricePage from "./PricePage";
 import CryptoListPage from "./CryptoListPage";
 import Menu from "./Menu";
 
+import { getCryptosFromStorage } from "./background";
+
 export const App = () => {
   const [currentPage, setCurrentPage] = useState("Price");
 
   const [selectedCryptos, setSelectedCryptos] = useState<string[]>([]);
+
+  async function fetchSelectedCryptos() {
+    try {
+      const cryptos = await getCryptosFromStorage();
+      // Handle the datas here
+    //   console.log("Cryptos retrieved:", datas);
+        setSelectedCryptos(cryptos);
+    } catch (error) {
+      console.error("Error retrieving cryptos:", error);
+    }
+  }
+
+  useEffect(() => {
+    async function fetchInitialData() {
+        await fetchSelectedCryptos();
+        // fetchCryptocurrencies();
+      }
+  
+      fetchInitialData();
+}, []);
 
   return (
     <ChakraProvider theme={theme}>

@@ -4,7 +4,7 @@ import {
     Flex,
 } from "@chakra-ui/react"
 
-import Cryptocurrency, { Cryptocurrencies, CryptocurrencyMap, getKeyByValue } from "./cryptocurrencies";
+import Cryptocurrency, { createCryptocurrencyFromName, createCryptocurrenciesFromNames }/*, { Cryptocurrencies, CryptocurrencyMap, getKeyByValue }*/ from "./cryptocurrencies";
 import PriceService from './PriceService';
 import { fetchPriceChangePercent } from './PriceChangeService';
 
@@ -13,6 +13,18 @@ interface PricePageProps {
 }
 
 const PricePage: React.FC<PricePageProps> = ({ selectedCryptos }) => {
+
+    const CryptocurrencyMap = useMemo(() => {
+        const map = new Map<string, Cryptocurrency>();
+        for (const crypto of selectedCryptos) {
+            const key = crypto.toUpperCase();
+            if(key) {
+                map.set(key, createCryptocurrencyFromName(key));
+            }
+        }
+        return map;
+    }
+    , [selectedCryptos]);
 
     const initialCryptoData = Object.fromEntries(
         Array.from(CryptocurrencyMap).map(([crypto, cryptoData]) => [
@@ -23,49 +35,36 @@ const PricePage: React.FC<PricePageProps> = ({ selectedCryptos }) => {
 
     const [cryptoData, setCryptoData] = useState(initialCryptoData);
 
+    const [cryptoChangeData, setCryptoChangeData] = useState(new Map<Cryptocurrency, number | null>());
 
-    const [cryptoChangeData, setCryptoChangeData] = useState(new Map<Cryptocurrencies, number | null>());
-
-    const handleSelectedCryptosChange = () => {
-        // const modifiedCryptos = selectedCryptos.map(crypto => crypto.toUpperCase()); // Example: Convert to uppercase
-        // let cryptos = new Map<Cryptocurrencies, Cryptocurrency>();
-        // for (const crypto of selectedCryptos) {
-        //     const key = getKeyByValue(Cryptocurrencies as any, crypto.toUpperCase());
-        //     if(key) {
-        //         cryptos.set(key, { name: crypto, ws_address: 'wss://stream.binance.com:9443/ws/'+ crypto + 'usdt@trade', price: '0.0', color: 'gray.200' });
-        //     }
-        // }
-
-        // // Update cryptoData to only include modifiedCryptos
-        // const updatedCryptoData = Object.fromEntries(
-        //     Object.entries(cryptoData).filter(([crypto]) => modifiedCryptos.includes(crypto))
-        // );
-
-        // setCryptoData(updatedCryptoData);
-      };
-
-    useEffect(() => {
-        handleSelectedCryptosChange();
-    }, [selectedCryptos]);
 
     useEffect(() => {
         const fetchData = async () => {
             const promises = Array.from(CryptocurrencyMap.keys()).map(async (crypto) => {
-                const priceChange = await fetchPriceChangePercent(crypto);
-                return [crypto, priceChange] as [Cryptocurrencies, number | null];
+                const cryptoData = CryptocurrencyMap.get(crypto);
+                if(cryptoData) {
+                    const priceChange = await fetchPriceChangePercent(cryptoData);
+                    return [cryptoData, priceChange] as [Cryptocurrency, number | null];
+                } else {
+                    return [undefined, null] as [undefined, number | null];
+                }
             });
 
-            const cryptoChangeData = new Map(await Promise.all(promises));
+            const results = await Promise.all(promises);
+            const filteredResults = results.filter(([crypto]) => crypto !== undefined);
+
+            const cryptoChangeData = new Map<Cryptocurrency, number | null>(filteredResults as [Cryptocurrency, number | null][]);
             setCryptoChangeData(cryptoChangeData);
+            
         };
         fetchData();
 
 
 
 
-        const cryptoServices = {} as Record<Cryptocurrencies, PriceService>;
+        const cryptoServices = {} as Record<string, PriceService>;
 
-        function handlePriceUpdate(crypto: Cryptocurrencies) {
+        function handlePriceUpdate(crypto: string) {
             return (price: string, color: string) => {
                 setCryptoData((prevCryptoData) => ({
                     ...prevCryptoData,
@@ -81,9 +80,9 @@ const PricePage: React.FC<PricePageProps> = ({ selectedCryptos }) => {
                 const service = new PriceService(cryptoData);
 
                 // Use the handlePriceUpdate function with the correct 'crypto'
-                service.registerSendPriceCallback(handlePriceUpdate(crypto));
+                service.registerSendPriceCallback(handlePriceUpdate(cryptoData.name));
 
-                cryptoServices[crypto] = service;
+                cryptoServices[cryptoData.name] = service;
             }
         }
 
@@ -118,11 +117,11 @@ const PricePage: React.FC<PricePageProps> = ({ selectedCryptos }) => {
                     <Text fontSize="md" fontWeight={"semibold"} color="gray.200" marginLeft={5}>
                         {crypto}
                     </Text>
-                    <Text fontSize="sm" color={(!cryptoChangeData.get(crypto) || !crypto || cryptoChangeData.get(crypto) === 0) ? "gray.200" : (cryptoChangeData.get(crypto)! > 0) ? "green" : "red"} marginRight={5}>
-                        {cryptoChangeData.get(crypto)}%
+                    <Text fontSize="sm" color={(!cryptoChangeData.get(CryptocurrencyMap.get(crypto)!) || !crypto || cryptoChangeData.get(CryptocurrencyMap.get(crypto)!)! === 0) ? "gray.200" : (cryptoChangeData.get(CryptocurrencyMap.get(crypto)!)! > 0) ? "green" : "red"} marginRight={5}>
+                        {cryptoChangeData.get(CryptocurrencyMap.get(crypto)!) ?? 0}%
                     </Text>
-                    <Text fontSize="md" fontWeight={"semibold"} color={cryptoData[crypto].color} marginRight={5}>
-                        ${cryptoData[crypto].price}
+                    <Text fontSize="md" fontWeight={"semibold"} color={cryptoData[crypto]?.color ?? "gray.200"} marginRight={5}>
+                        ${cryptoData[crypto]?.price ?? "00.00"}
                     </Text>
                 </Flex>
             ))}

@@ -1,14 +1,13 @@
-import Cryptocurrency, { Cryptocurrencies, CryptocurrencyMap } from './cryptocurrencies';
+import Cryptocurrency/*, { Cryptocurrencies, CryptocurrencyMap }*/ from './cryptocurrencies';
 
-export async function fetchPriceChangePercent(crypto: Cryptocurrencies): Promise<number | null> {
+export async function fetchPriceChangePercent(crypto: Cryptocurrency): Promise<number | null> {
     try {
-        const cryptocurrency = CryptocurrencyMap.get(crypto);
-        if (!cryptocurrency) {
+        if (!crypto) {
             console.error(`Cryptocurrency ${crypto} not found in the map.`);
             return null;
         }
 
-        const response = await fetch(`https://api.binance.us/api/v3/ticker/24hr?symbol=${crypto}USDT`);
+        const response = await fetch(`https://api.binance.us/api/v3/ticker/24hr?symbol=${crypto.name}USDT`);
         if (!response.ok) {
             throw new Error(`HTTP request failed with status: ${response.status}`);
         }
@@ -16,7 +15,7 @@ export async function fetchPriceChangePercent(crypto: Cryptocurrencies): Promise
         const priceChangePercent = parseFloat(data.priceChangePercent);
 
         // You can update the cryptocurrency data with the fetched price here if needed
-        cryptocurrency.price = priceChangePercent.toString();
+        crypto.price = priceChangePercent.toString();
 
         return priceChangePercent;
     } catch (error) {
