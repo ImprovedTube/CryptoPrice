@@ -12,9 +12,14 @@ import { getCryptosFromStorage, setSelectedCryptosInStorage } from "./background
 
 const apiURL = 'https://api.binance.com/api/v3/exchangeInfo';
 
-export const CryptoListPage = () => {
+interface CryptoListPageProps {
+    selectedCryptos: string[];
+    setSelectedCryptos: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+const CryptoListPage: React.FC<CryptoListPageProps> = ({ selectedCryptos, setSelectedCryptos }) => {
     const [cryptoData, setCryptoData] = useState([]);
-    const [selectedCryptos, setSelectedCryptos] = useState([]);
+    // const [selectedCryptos, setSelectedCryptos] = useState([]);
 
     async function fetchSelectedCryptos() {
         try {
@@ -61,7 +66,7 @@ export const CryptoListPage = () => {
         // Toggle the selected status of the clicked crypto
         setSelectedCryptos((prevSelectedCryptos) => {
           if (prevSelectedCryptos.includes(crypto)) {
-            return prevSelectedCryptos.filter((selectedCrypto) => selectedCrypto !== crypto);
+            return prevSelectedCryptos.filter((selectedCrypto: any) => selectedCrypto !== crypto);
           } else {
             return [...prevSelectedCryptos, crypto];
           }
@@ -108,3 +113,5 @@ export const CryptoListPage = () => {
         </Flex>
     );
 }
+
+export default CryptoListPage;

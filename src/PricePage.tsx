@@ -8,7 +8,11 @@ import Cryptocurrency, { Cryptocurrencies, CryptocurrencyMap } from "./cryptocur
 import PriceService from './PriceService';
 import { fetchPriceChangePercent } from './PriceChangeService';
 
-export const PricePage = () => {
+interface PricePageProps {
+    selectedCryptos: string[];
+}
+
+const PricePage: React.FC<PricePageProps> = ({ selectedCryptos }) => {
 
     const initialCryptoData = Object.fromEntries(
         Array.from(CryptocurrencyMap).map(([crypto, cryptoData]) => [
@@ -103,3 +107,5 @@ export const PricePage = () => {
         </Flex>
     );
 }
+
+export default PricePage;

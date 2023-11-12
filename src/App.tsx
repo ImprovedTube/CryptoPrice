@@ -5,12 +5,14 @@ import {
   Flex,
 } from "@chakra-ui/react"
 
-import { PricePage } from "./PricePage";
-import { CryptoListPage } from "./CryptoListPage";
+import PricePage from "./PricePage";
+import CryptoListPage from "./CryptoListPage";
 import Menu from "./Menu";
 
 export const App = () => {
   const [currentPage, setCurrentPage] = useState("Price");
+
+  const [selectedCryptos, setSelectedCryptos] = useState<string[]>([]);
 
   return (
     <ChakraProvider theme={theme}>
@@ -26,8 +28,12 @@ export const App = () => {
         overflow-x={"auto"}
       >
         <Menu setCurrentPage={setCurrentPage} />
-        {currentPage === "Price" ? <PricePage /> : null}
-        {currentPage === "CryptoList" ? <CryptoListPage /> : null}
+        {currentPage === "Price" ? <PricePage selectedCryptos={selectedCryptos} /> : null}
+        {currentPage === "CryptoList" 
+          ? 
+          <CryptoListPage selectedCryptos={selectedCryptos} setSelectedCryptos={setSelectedCryptos} />
+          : null
+        }
       </Flex>
     </ChakraProvider >
   );

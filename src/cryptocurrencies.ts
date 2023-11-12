@@ -17,5 +17,9 @@ const CryptocurrencyMap: Map<Cryptocurrencies, Cryptocurrency> = new Map([
     [Cryptocurrencies.LTC, { name: 'Litecoin', ws_address: 'wss://stream.binance.com:9443/ws/ltcusdt@trade', price: '0.0', color: 'gray.200' }],
 ]);
 
+function createCryptocurrencyFromName(name: string): Cryptocurrency {
+    return {name: name, ws_address: 'wss://stream.binance.com:9443/ws/'+ name +'usdt@trade', price: '0.0', color: 'gray.200'};
+}
+
 export default Cryptocurrency;
-export { Cryptocurrencies, CryptocurrencyMap };
+export { Cryptocurrencies, CryptocurrencyMap, createCryptocurrencyFromName };
