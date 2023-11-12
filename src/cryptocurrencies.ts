@@ -21,5 +21,9 @@ function createCryptocurrencyFromName(name: string): Cryptocurrency {
     return {name: name, ws_address: 'wss://stream.binance.com:9443/ws/'+ name +'usdt@trade', price: '0.0', color: 'gray.200'};
 }
 
+function getKeyByValue<T extends string>(enumObject: Record<string, T>, value: T): string | undefined {
+    return Object.keys(enumObject).find(key => enumObject[key] === value);
+}
+
 export default Cryptocurrency;
-export { Cryptocurrencies, CryptocurrencyMap, createCryptocurrencyFromName };
+export { Cryptocurrencies, CryptocurrencyMap, createCryptocurrencyFromName, getKeyByValue };

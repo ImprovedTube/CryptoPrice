@@ -4,7 +4,7 @@ import {
     Flex,
 } from "@chakra-ui/react"
 
-import Cryptocurrency, { Cryptocurrencies, CryptocurrencyMap } from "./cryptocurrencies";
+import Cryptocurrency, { Cryptocurrencies, CryptocurrencyMap, getKeyByValue } from "./cryptocurrencies";
 import PriceService from './PriceService';
 import { fetchPriceChangePercent } from './PriceChangeService';
 
@@ -25,6 +25,28 @@ const PricePage: React.FC<PricePageProps> = ({ selectedCryptos }) => {
 
 
     const [cryptoChangeData, setCryptoChangeData] = useState(new Map<Cryptocurrencies, number | null>());
+
+    const handleSelectedCryptosChange = () => {
+        // const modifiedCryptos = selectedCryptos.map(crypto => crypto.toUpperCase()); // Example: Convert to uppercase
+        // let cryptos = new Map<Cryptocurrencies, Cryptocurrency>();
+        // for (const crypto of selectedCryptos) {
+        //     const key = getKeyByValue(Cryptocurrencies as any, crypto.toUpperCase());
+        //     if(key) {
+        //         cryptos.set(key, { name: crypto, ws_address: 'wss://stream.binance.com:9443/ws/'+ crypto + 'usdt@trade', price: '0.0', color: 'gray.200' });
+        //     }
+        // }
+
+        // // Update cryptoData to only include modifiedCryptos
+        // const updatedCryptoData = Object.fromEntries(
+        //     Object.entries(cryptoData).filter(([crypto]) => modifiedCryptos.includes(crypto))
+        // );
+
+        // setCryptoData(updatedCryptoData);
+      };
+
+    useEffect(() => {
+        handleSelectedCryptosChange();
+    }, [selectedCryptos]);
 
     useEffect(() => {
         const fetchData = async () => {
