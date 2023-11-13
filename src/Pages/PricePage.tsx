@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react"
 import {
-    Text,
     Flex,
 } from "@chakra-ui/react"
 
 import Cryptocurrency, { createCryptocurrencyFromName } from "../Utils/cryptocurrencies";
 import PriceService from '../Services/PriceService';
 import { fetchPriceChangePercent } from '../Services/PriceChangeService';
+import PriceRow from "../Components/PriceRow";
 
 interface PricePageProps {
     selectedCryptos: string[];
@@ -104,26 +104,14 @@ const PricePage: React.FC<PricePageProps> = ({ selectedCryptos }) => {
             bg={"black"}
         >
             {Array.from(CryptocurrencyMap.keys()).map((crypto, i, row) => (
-                <Flex
-                    bg={"black"}
-                    borderTop={"1px solid"}
-                    width={"100%"}
-                    alignItems={"center"}
-                    justifyContent={"space-between"}
-                    shadow={"base"}
-                    borderBottom={{ base: i === row.length - 1 ? "1px solid" : "none" }}
-                    borderColor={"gray.600"}
-                >
-                    <Text fontSize="md" fontWeight={"semibold"} color="gray.200" marginLeft={5}>
-                        {crypto}
-                    </Text>
-                    <Text fontSize="sm" color={(!cryptoChangeData.get(CryptocurrencyMap.get(crypto)!) || !crypto || cryptoChangeData.get(CryptocurrencyMap.get(crypto)!)! === 0) ? "gray.200" : (cryptoChangeData.get(CryptocurrencyMap.get(crypto)!)! > 0) ? "green" : "red"} marginRight={5}>
-                        {cryptoChangeData.get(CryptocurrencyMap.get(crypto)!) ?? 0}%
-                    </Text>
-                    <Text fontSize="md" fontWeight={"semibold"} color={cryptoData[crypto]?.color ?? "gray.200"} marginRight={5}>
-                        ${cryptoData[crypto]?.price ?? "00.00"}
-                    </Text>
-                </Flex>
+                <PriceRow
+                    crypto={crypto}
+                    i={i}
+                    row={row}
+                    cryptoData={cryptoData}
+                    cryptoChangeData={cryptoChangeData}
+                    CryptocurrencyMap={CryptocurrencyMap}
+                    />
             ))}
         </Flex>
     );
