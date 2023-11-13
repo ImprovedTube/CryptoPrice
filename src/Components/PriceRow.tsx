@@ -3,7 +3,7 @@ import {
     Text,
     Flex,
 } from "@chakra-ui/react"
-import { WebSocketManager } from "../Services/PriceService";
+import WebSocketManager from "../Services/WebSocketManager";
 import Cryptocurrency from "../Utils/cryptocurrencies";
 
 

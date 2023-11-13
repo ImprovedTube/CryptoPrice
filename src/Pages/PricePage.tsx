@@ -4,7 +4,7 @@ import {
 } from "@chakra-ui/react"
 
 import Cryptocurrency, { createCryptocurrencyFromName } from "../Utils/cryptocurrencies";
-import { WebSocketManager } from '../Services/PriceService';
+import WebSocketManager from '../Services/WebSocketManager';
 import { fetchPriceChangePercent } from '../Services/PriceChangeService';
 import PriceRow from "../Components/PriceRow";
 
