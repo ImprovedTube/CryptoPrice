@@ -3,7 +3,6 @@ import Cryptocurrency from "./cryptocurrencies";
 class PriceService {
     ws: WebSocket | null = null;
     private lastPrice = '0.0';
-    // private crypto: Cryptocurrency | null = null;
 
     // Callback functions for when connected or disconnected
     private sendPriceCallback: ((price: string, color: string) => void) | null = null;

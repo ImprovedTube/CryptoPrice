@@ -4,7 +4,7 @@ import {
     Flex,
 } from "@chakra-ui/react"
 
-import Cryptocurrency, { createCryptocurrencyFromName, createCryptocurrenciesFromNames }/*, { Cryptocurrencies, CryptocurrencyMap, getKeyByValue }*/ from "./cryptocurrencies";
+import Cryptocurrency, { createCryptocurrencyFromName } from "./cryptocurrencies";
 import PriceService from './PriceService';
 import { fetchPriceChangePercent } from './PriceChangeService';
 

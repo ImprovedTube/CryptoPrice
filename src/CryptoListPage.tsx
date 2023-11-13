@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 import {
     Flex,
     Text,
@@ -7,59 +5,16 @@ import {
 
 import { AddIcon, CheckIcon } from '@chakra-ui/icons'
 
-import { getCryptosFromStorage, setSelectedCryptosInStorage } from "./background";
+import { setSelectedCryptosInStorage } from "./background";
 
-
-const apiURL = 'https://api.binance.com/api/v3/exchangeInfo';
 
 interface CryptoListPageProps {
+    cryptoList: never[];
     selectedCryptos: string[];
     setSelectedCryptos: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const CryptoListPage: React.FC<CryptoListPageProps> = ({ selectedCryptos, setSelectedCryptos }) => {
-    const [cryptoData, setCryptoData] = useState([]);
-    // const [selectedCryptos, setSelectedCryptos] = useState([]);
-
-    // async function fetchSelectedCryptos() {
-    //     try {
-    //       const cryptos = await getCryptosFromStorage();
-    //       // Handle the datas here
-    //     //   console.log("Cryptos retrieved:", datas);
-    //         setSelectedCryptos(cryptos);
-    //     } catch (error) {
-    //       console.error("Error retrieving cryptos:", error);
-    //     }
-    //   }
-
-    async function fetchCryptocurrencies() {
-        try {
-            const response = await fetch(apiURL);
-
-            if (response.ok) {
-                const data = await response.json();
-                const pairsData = data.symbols;
-                const filteredData = pairsData.filter((s: { symbol: string | string[]; }) => s.symbol.includes('USDT'));
-                const cryptoList = filteredData.map((s: { symbol: any; }) => s.symbol.replace('USDT', ''));
-                setCryptoData(cryptoList); // Update state with the fetched data
-            } else {
-                console.error('Failed to fetch data');
-            }
-        } catch (error) {
-            console.error('An error occurred:', error);
-        }
-    }
-
-    
-
-    useEffect(() => {
-        async function fetchInitialData() {
-            // await fetchSelectedCryptos();
-            fetchCryptocurrencies();
-          }
-      
-          fetchInitialData();
-    }, []);
+const CryptoListPage: React.FC<CryptoListPageProps> = ({ cryptoList, selectedCryptos, setSelectedCryptos }) => {
 
     const handleFlexClick = (crypto: never) => {
 
@@ -85,7 +40,7 @@ const CryptoListPage: React.FC<CryptoListPageProps> = ({ selectedCryptos, setSel
             justifyContent={"flex-start"}
             bg={"black"}
         >
-            {cryptoData.map((crypto, index, row) => (
+            {cryptoList.map((crypto, index, row) => (
                 <Flex
                     key={index}
                     bg={"black"}
