@@ -5,9 +5,9 @@ import {
   Flex,
 } from "@chakra-ui/react"
 
-import PricePage from "./PricePage";
-import CryptoListPage from "./CryptoListPage";
-import Menu from "./Menu";
+import PricePage from "./Pages/PricePage";
+import CryptoListPage from "./Pages/CryptoListPage";
+import Menu from "./Components/Menu";
 
 import { getCryptosFromStorage } from "./background";
 

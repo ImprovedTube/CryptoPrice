@@ -4,9 +4,9 @@ import {
     Flex,
 } from "@chakra-ui/react"
 
-import Cryptocurrency, { createCryptocurrencyFromName } from "./cryptocurrencies";
-import PriceService from './PriceService';
-import { fetchPriceChangePercent } from './PriceChangeService';
+import Cryptocurrency, { createCryptocurrencyFromName } from "../Utils/cryptocurrencies";
+import PriceService from '../Services/PriceService';
+import { fetchPriceChangePercent } from '../Services/PriceChangeService';
 
 interface PricePageProps {
     selectedCryptos: string[];

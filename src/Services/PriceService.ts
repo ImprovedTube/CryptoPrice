@@ -1,4 +1,4 @@
-import Cryptocurrency from "./cryptocurrencies";
+import Cryptocurrency from "../Utils/cryptocurrencies";
 
 class PriceService {
     ws: WebSocket | null = null;

@@ -25,39 +25,4 @@
     "src",
     "src/background.js"
   ]
-
-  // "compilerOptions": {
-  //   "target": "es5",
-  //   "lib": [
-  //     "dom",
-  //     "dom.iterable",
-  //     "esnext"
-  //   ],
-  //   "downlevelIteration": true,
-  //   "module": "esnext",
-  //   "allowJs": true,
-  //   "moduleResolution": "node",
-  //   "resolveJsonModule": true,
-  //   "isolatedModules": true,
-  //   "strict": true,
-  //   "esModuleInterop": true,
-  //   "skipLibCheck": true,
-  //   "noEmit": true,
-  //   "allowSyntheticDefaultImports": true,
-  //   "forceConsistentCasingInFileNames": true,
-  //   "outDir": "./build/static/js",
-  //   "rootDir": "./src",
-  //   "jsx": "react-jsx"
-  // },
-  // "include": [
-  //   "src/**/*.ts",
-  //   "src/**/*.tsx",
-  //   "src/background.js"  // Include the background.js file
-  // ],
-  // "exclude": ["node_modules"]
-  
-  // make the file src/background.js be in build/static/js/background.js after the build
-  // "files": [
-  //   "src/background.js" : "build/static/js/background.js"
-  // ]
 }

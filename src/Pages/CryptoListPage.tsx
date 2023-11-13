@@ -5,7 +5,7 @@ import {
 
 import { AddIcon, CheckIcon } from '@chakra-ui/icons'
 
-import { setSelectedCryptosInStorage } from "./background";
+import { setSelectedCryptosInStorage } from "../background";
 
 
 interface CryptoListPageProps {

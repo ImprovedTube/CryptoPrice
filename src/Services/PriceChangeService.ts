@@ -1,4 +1,4 @@
-import Cryptocurrency from './cryptocurrencies';
+import Cryptocurrency from '../Utils/cryptocurrencies';
 
 export async function fetchPriceChangePercent(crypto: Cryptocurrency): Promise<number | null> {
     try {
