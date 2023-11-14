@@ -65,12 +65,20 @@ const PriceRow: React.FC<PriceRowProps> = ({
           borderBottom={{ base: i === row.length - 1 ? "1px solid" : "none" }}
           borderColor={"gray.600"}
         >
-            <Text fontSize="md" fontWeight={"semibold"} color="gray.200" marginLeft={5}>
-                {crypto}
-            </Text>
-            <Text fontSize="sm" color={(!cryptoChangeData.get(CryptocurrencyMap.get(crypto)!) || !crypto || cryptoChangeData.get(CryptocurrencyMap.get(crypto)!) === 0) ? "gray.200" : (cryptoChangeData.get(CryptocurrencyMap.get(crypto)!)! > 0) ? "green" : "red"} marginRight={5}>
-                {cryptoChangeData.get(CryptocurrencyMap.get(crypto)!)}%
-            </Text>
+            <Flex
+                width={"70%"}
+                alignItems={"center"}
+                justifyContent={"space-between"}
+                height={"100%"}
+
+            >
+                <Text fontSize="md" fontWeight={"semibold"} color="gray.200" marginLeft={5}>
+                    {crypto}
+                </Text>
+                <Text fontSize="sm" color={(!cryptoChangeData.get(CryptocurrencyMap.get(crypto)!) || !crypto || cryptoChangeData.get(CryptocurrencyMap.get(crypto)!) === 0) ? "gray.200" : (cryptoChangeData.get(CryptocurrencyMap.get(crypto)!)! > 0) ? "green" : "red"} marginRight={5}>
+                    {cryptoChangeData.get(CryptocurrencyMap.get(crypto)!)}%
+                </Text>
+            </Flex>
             <Text fontSize="md" fontWeight={"semibold"} color={cryptoData[crypto]?.color || "gray.200"} marginRight={5}>
                 ${cryptoData[crypto]?.price || "0.0"}
             </Text>

@@ -90,7 +90,7 @@ const Menu: React.FC<MenuProps> = ({ setCurrentPage }) => {
                     }
                 }
             >
-                Menu
+                List
             </Button>
         </Flex>
     );
