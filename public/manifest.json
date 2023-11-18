@@ -9,7 +9,6 @@
     "default_title": "React Chrome Extension"
   },
   "permissions": [
-    "activeTab",
     "scripting",
     "storage"
   ],
