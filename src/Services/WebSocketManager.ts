@@ -14,6 +14,10 @@ class WebSocketManager {
 
 
     constructor(cryptocurrencies: Cryptocurrency[]) {
+
+        cryptocurrencies.forEach((crypto) => {
+            this.getPriceHttpRequest(crypto);
+        });
         this.initializeWebSocket(cryptocurrencies);
     }
 
@@ -57,6 +61,32 @@ class WebSocketManager {
     
         // Initialize the WebSocket with the updated list of cryptocurrencies
         this.initializeWebSocket(cryptocurrencies);
+    }
+
+    private async getPriceHttpRequest(crypto: Cryptocurrency) {
+        try {
+            if (!crypto) {
+                console.error(`Cryptocurrency ${crypto} not found in the map.`);
+                return 0.00;
+            }
+    
+            const response = await fetch(`https://api.binance.com/api/v3/avgPrice?symbol=${crypto.name.toLocaleUpperCase()}USDT`);
+            if (!response.ok) {
+                throw new Error(`HTTP request failed with status: ${response.status}`);
+            }
+    
+            const data = await response.json();
+            const price = parseFloat(data.price).toFixed(2);
+    
+            if (this.sendPriceCallback) {
+                this.sendPriceCallback(crypto.name, price, "gray.200");
+            }
+
+        } catch (firstApiError) {
+            if (this.sendPriceCallback) {
+                this.sendPriceCallback(crypto.name, "0.00", "gray.200");
+            }
+        }
     }
 }
 
